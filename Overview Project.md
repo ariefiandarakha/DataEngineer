@@ -1,4 +1,4 @@
-![image](https://github.com/ariefiandarakha/DataEngineer/assets/70312661/42d8b179-4d67-4ccb-96a8-8ac15afeaf4e)# Data Engineer Project 
+# Data Engineer Project 
 
 # Scenario
 Seorang data engineer yang bekerja untuk perusahaan sepeda. Perusahaan menjual dan mendistribusikan produk ke beberapa negara seperti Amerika Serikat, Kanada, Perancis, Jerman, Australia, dan Inggris. Produk yang diperjualkan adalah berbagai macam sepeda seperti sepeda gunung, sepeda jalan ataupun sepeda tour, serta menyediakan _spare part_ juga. Perusahaan ingin membuat suatu database untuk mendata _product_, kategori dan sub-kategori _product_, _customer_, wilayah penjualan, dan juga hasil penjualannya. Output yang diinginkan adalah Dashboard berupa data _customer summary_,_product summary_, dan _top product sales distribution_
