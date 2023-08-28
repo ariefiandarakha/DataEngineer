@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32510.428
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "BIDWH", "BIDWH\BIDWH.dtproj", "{E40D8B7C-0459-456C-B426-9E55633FBC74}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E40D8B7C-0459-456C-B426-9E55633FBC74}.Development|Default.ActiveCfg = Development
+		{E40D8B7C-0459-456C-B426-9E55633FBC74}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F687E6B2-C22A-40CD-8A07-40CEC5D0D62E}
+	EndGlobalSection
+EndGlobal

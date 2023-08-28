@@ -1,0 +1,1149 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/20/2022 5:31:14 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="LAPTOP-6OQM3DLS"
+  DTS:CreatorName="LAPTOP-6OQM3DLS\1374"
+  DTS:DTSID="{AF41025D-7EE8-4965-9596-D767C4551806}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.167"
+  DTS:LocaleID="14345"
+  DTS:ObjectName="stgPromotion"
+  DTS:PackageType="5"
+  DTS:VersionBuild="9"
+  DTS:VersionGUID="{F2E2AEA5-894A-4F49-B897-DB20418539DF}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{EB631C35-95F8-4959-B7E0-94CAF7CE51A9}"
+      DTS:ObjectName="LAPTOP-6OQM3DLS.BIDWH">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=LAPTOP-6OQM3DLS;Initial Catalog=BIDWH;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{E5417BE6-B7FB-4218-A8E9-63FF7BAEF882}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="vColumn">
+      <DTS:VariableValue
+        DTS:DataType="8">PromotionKey</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{6E63293B-5214-49A7-BD13-6A7E0C41B312}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="vMaxDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Delete Redundant"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{124830c3-443a-4671-90a8-ba240d3cb776}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Delete Redundant"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="SqlStatementSource">"With DelRud as
+(
+Select ROW_NUMBER() OVER(Partition By  "+@[User::vColumn]+" Order By ETLDate desc) as RowNum From " + @[System::PackageName] + "
+)
+Delete From DelRud Where RowNum !=1"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{EB631C35-95F8-4959-B7E0-94CAF7CE51A9}"
+          SQLTask:SqlStatementSource="With DelRud as&#xA;(&#xA;Select ROW_NUMBER() OVER(Partition By  PromotionKey Order By ETLDate desc) as RowNum From stgPromotion&#xA;)&#xA;Delete From DelRud Where RowNum !=1" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Get MaxDate"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{CCDD8FC0-C7D5-423B-AF49-CF9BBBFD0BD6}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get MaxDate"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{EB631C35-95F8-4959-B7E0-94CAF7CE51A9}"
+          SQLTask:SqlStatementSource="Select Max(Convert(Date,ModifiedDate)) as MaxDate &#xA;From stgPromotion"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="MaxDate"
+            SQLTask:DtsVariableName="User::vMaxDate" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Insert Source to Staging"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{A5A96AFE-5F58-40F3-B74D-188233AD1899}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Insert Source to Staging"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Insert Source to Staging\Add ETLDate Column"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Add ETLDate Column"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Insert Source to Staging\Add ETLDate Column.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Insert Source to Staging\Add ETLDate Column.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Insert Source to Staging\Add ETLDate Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Add ETLDate Column.Outputs[Derived Column Output].Columns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Insert Source to Staging\Add ETLDate Column.Outputs[Derived Column Output].Columns[ETLDate]"
+                      name="ETLDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[GETDATE]()</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">GETDATE()</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Insert Source to Staging\Add ETLDate Column.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Insert Source to Staging\Add ETLDate Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Add ETLDate Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert Source to Staging\Add ETLDate Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Add ETLDate Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert Source to Staging\Add ETLDate Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Insert Source to Staging\Destination stgPromotion"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Destination stgPromotion"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[stgPromotion]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Insert Source to Staging\Destination stgPromotion.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+                  connectionManagerRefId="Package.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[PromotionKey]"
+                      cachedDataType="r8"
+                      cachedName="PromotionKey"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[PromotionKey]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[PromotionKey]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[PromotionAlternateKey]"
+                      cachedDataType="r8"
+                      cachedName="PromotionAlternateKey"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[PromotionAlternateKey]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[EnglishPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionName"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionName]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[SpanishPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionName"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionName]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[FrenchPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionName"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionName]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[DiscountPct]"
+                      cachedDataType="r8"
+                      cachedName="DiscountPct"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[DiscountPct]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[DiscountPct]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[EnglishPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionType"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionType]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[SpanishPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionType"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionType]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[FrenchPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionType"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionType]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[EnglishPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionCategory"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionCategory]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[SpanishPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionCategory"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionCategory]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[FrenchPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionCategory"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionCategory]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[StartDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="StartDate"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[StartDate]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[StartDate]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[EndDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EndDate"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[EndDate]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[EndDate]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[MinQty]"
+                      cachedDataType="r8"
+                      cachedName="MinQty"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[MinQty]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[MinQty]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[MaxQty]"
+                      cachedDataType="r8"
+                      cachedName="MaxQty"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[MaxQty]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[MaxQty]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[CreateDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="CreateDate"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[CreateDate]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[CreateDate]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[ModifiedDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="ModifiedDate"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[ModifiedDate]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[ModifiedDate]" />
+                    <inputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].Columns[ETLDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="ETLDate"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[ETLDate]"
+                      lineageId="Package\Insert Source to Staging\Add ETLDate Column.Outputs[Derived Column Output].Columns[ETLDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[PromotionKey]"
+                      dataType="i4"
+                      name="PromotionKey" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[PromotionAlternateKey]"
+                      dataType="i4"
+                      name="PromotionAlternateKey" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[DiscountPct]"
+                      dataType="i4"
+                      name="DiscountPct" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[StartDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="StartDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[EndDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="EndDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[MinQty]"
+                      dataType="i4"
+                      name="MinQty" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[MaxQty]"
+                      dataType="i4"
+                      name="MaxQty" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[CreateDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="CreateDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[ModifiedDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="ModifiedDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input].ExternalColumns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      name="ETLDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Insert Source to Staging\Destination stgPromotion.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert Source to Staging\Destination stgPromotion.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Destination stgPromotion.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert Source to Staging\Destination stgPromotion.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Insert Source to Staging\Source Promotion"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Source Promotion"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">Select * From Promotion
+Where convert(date,modifieddate)&gt;=?</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping">"Parameter0:Input",{6E63293B-5214-49A7-BD13-6A7E0C41B312};</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Insert Source to Staging\Source Promotion.Connections[OleDbConnection]"
+                  connectionManagerID="{367F9596-E5A7-4656-A752-BF5E71E4ECDB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-6OQM3DLS.BISource]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[PromotionKey]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[PromotionKey]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[PromotionKey]"
+                      name="PromotionKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[PromotionAlternateKey]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]"
+                      name="PromotionAlternateKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionName]"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]"
+                      name="EnglishPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionName]"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]"
+                      name="SpanishPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionName]"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]"
+                      name="FrenchPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[DiscountPct]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[DiscountPct]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[DiscountPct]"
+                      name="DiscountPct"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionType]"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]"
+                      name="EnglishPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionType]"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]"
+                      name="SpanishPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionType]"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]"
+                      name="FrenchPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]"
+                      name="EnglishPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]"
+                      name="SpanishPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]"
+                      name="FrenchPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[StartDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[StartDate]"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[StartDate]"
+                      name="StartDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[EndDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[EndDate]"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[EndDate]"
+                      name="EndDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[MinQty]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[MinQty]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[MinQty]"
+                      name="MinQty"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[MaxQty]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[MaxQty]"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[MaxQty]"
+                      name="MaxQty"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[CreateDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[CreateDate]"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[CreateDate]"
+                      name="CreateDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[ModifiedDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[ModifiedDate]"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].Columns[ModifiedDate]"
+                      name="ModifiedDate"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[PromotionKey]"
+                      dataType="r8"
+                      name="PromotionKey" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[PromotionAlternateKey]"
+                      dataType="r8"
+                      name="PromotionAlternateKey" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[DiscountPct]"
+                      dataType="r8"
+                      name="DiscountPct" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[StartDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="StartDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[EndDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="EndDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[MinQty]"
+                      dataType="r8"
+                      name="MinQty" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[MaxQty]"
+                      dataType="r8"
+                      name="MaxQty" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[CreateDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="CreateDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output].ExternalColumns[ModifiedDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="ModifiedDate" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[PromotionKey]"
+                      dataType="r8"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[PromotionKey]"
+                      name="PromotionKey" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[PromotionAlternateKey]"
+                      dataType="r8"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[PromotionAlternateKey]"
+                      name="PromotionAlternateKey" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionName]"
+                      name="EnglishPromotionName" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionName]"
+                      name="SpanishPromotionName" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionName]"
+                      name="FrenchPromotionName" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[DiscountPct]"
+                      dataType="r8"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[DiscountPct]"
+                      name="DiscountPct" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionType]"
+                      name="EnglishPromotionType" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionType]"
+                      name="SpanishPromotionType" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionType]"
+                      name="FrenchPromotionType" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionCategory]"
+                      name="EnglishPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionCategory]"
+                      name="SpanishPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionCategory]"
+                      name="FrenchPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[StartDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[StartDate]"
+                      name="StartDate" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[EndDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[EndDate]"
+                      name="EndDate" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[MinQty]"
+                      dataType="r8"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[MinQty]"
+                      name="MinQty" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[MaxQty]"
+                      dataType="r8"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[MaxQty]"
+                      name="MaxQty" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[CreateDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[CreateDate]"
+                      name="CreateDate" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[ModifiedDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[ModifiedDate]"
+                      name="ModifiedDate" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Insert Source to Staging.Paths[Derived Column Output]"
+              endId="Package\Insert Source to Staging\Destination stgPromotion.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\Insert Source to Staging\Add ETLDate Column.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Insert Source to Staging.Paths[OLE DB Source Output]"
+              endId="Package\Insert Source to Staging\Add ETLDate Column.Inputs[Derived Column Input]"
+              name="OLE DB Source Output"
+              startId="Package\Insert Source to Staging\Source Promotion.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{22CD18E7-029C-41E1-A60F-EE10A89A351B}"
+      DTS:From="Package\Get MaxDate"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Insert Source to Staging" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{D82EEDF4-FA29-4649-9D4B-B69BDB52F36D}"
+      DTS:From="Package\Insert Source to Staging"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Delete Redundant" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Delete Redundant"
+          TopLeft="312.5,163.5" />
+        <NodeLayout
+          Size="140,42"
+          Id="Package\Get MaxDate"
+          TopLeft="126.5,67.5" />
+        <NodeLayout
+          Size="193,42"
+          Id="Package\Insert Source to Staging"
+          TopLeft="298.5,68.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="266.5,89">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="32,0"
+              Start="0,0"
+              End="24.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="24.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="394.5,110.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,53"
+              Start="0,0"
+              End="0,45.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,45.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Insert Source to Staging">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="197,42"
+          Id="Package\Insert Source to Staging\Destination stgPromotion"
+          TopLeft="169.666666666667,225.5" />
+        <NodeLayout
+          Size="162,42"
+          Id="Package\Insert Source to Staging\Source Promotion"
+          TopLeft="187.166666666667,65.5" />
+        <NodeLayout
+          Size="179,42"
+          Id="Package\Insert Source to Staging\Add ETLDate Column"
+          TopLeft="178.666666666667,147.5" />
+        <EdgeLayout
+          Id="Package\Insert Source to Staging.Paths[OLE DB Source Output]"
+          TopLeft="268.166666666667,107.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,40"
+              Start="0,0"
+              End="0,32.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Insert Source to Staging.Paths[Derived Column Output]"
+          TopLeft="268.166666666667,189.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Insert Source to Staging\Destination stgPromotion">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Insert Source to Staging\Source Promotion">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

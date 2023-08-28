@@ -1,0 +1,3061 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/21/2022 2:45:53 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="LAPTOP-6OQM3DLS"
+  DTS:CreatorName="LAPTOP-6OQM3DLS\1374"
+  DTS:DTSID="{1BED7F5D-3A99-4AD3-9E5B-2D8F1DED5F87}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.167"
+  DTS:LocaleID="14345"
+  DTS:ObjectName="dimPromotion"
+  DTS:PackageType="5"
+  DTS:VersionBuild="12"
+  DTS:VersionGUID="{52228299-CEB2-4DD2-9CEB-1DC14F6F2A1C}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{24498831-04F4-494F-9E5F-CE3710CDD86D}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="vMaxCreateDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1CFB5CF9-F836-406D-B9E4-D3AE17614BEA}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="vMaxETLDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{37A6371D-1220-4F60-98CE-9B86F1369C24}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="vMaxModifiedDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Add Unknown and Not Available Values"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{4EE9543B-6438-4578-A93E-D2E41230BF0A}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Add Unknown and Not Available Values"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{980D4FA3-1FBC-465E-9516-A97B784924AE}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS(SELECT * FROM dimPromotion where PromotionKey IN ('-2'))&#xA;Insert Into dimPromotion Values&#xA;(           '-2'&#xA;           ,'-2'&#xA;           ,'Unknown'&#xA;           ,'Unknown'&#xA;           ,'Unknown'&#xA;           ,'-2'&#xA;           ,'Unknown'&#xA;           ,'Unknown'&#xA;           ,'Unknown'&#xA;           ,'Unknown'&#xA;           ,'Unknown'&#xA;           ,'Unknown'&#xA;           ,'1900-01-01 00:00:00:000'&#xA;           ,'1900-01-01 00:00:00:000'&#xA;           ,'-2'&#xA;           ,'-2'&#xA;           ,'1900-01-01 00:00:00:000'&#xA;           ,'1900-01-01 00:00:00:000'&#xA;           ,'1900-01-01 00:00:00:000'&#xA;)&#xA;IF NOT EXISTS(SELECT * FROM dimPromotion where PromotionKey IN ('-1'))&#xA;Insert Into dimPromotion Values&#xA;(           '-1'&#xA;           ,'-1'&#xA;           ,'Not Available'&#xA;           ,'Not Available'&#xA;           ,'Not Available'&#xA;           ,'-1'&#xA;           ,'Not Available'&#xA;           ,'Not Available'&#xA;           ,'Not Available'&#xA;           ,'Not Available'&#xA;           ,'Not Available'&#xA;           ,'Not Available'&#xA;           ,'1900-01-01 00:00:00:000'&#xA;           ,'1900-01-01 00:00:00:000'&#xA;           ,'-1'&#xA;           ,'-1'&#xA;           ,'1900-01-01 00:00:00:000'&#xA;           ,'1900-01-01 00:00:00:000'&#xA;           ,'1900-01-01 00:00:00:000'&#xA;)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Create Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{3347534F-57D5-4B74-A1AD-844E2FF2F72C}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{980D4FA3-1FBC-465E-9516-A97B784924AE}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS(SELECT * FROM SYSOBJECTS where [name] = 'dimPromotion' and xtype ='U')&#xA;Begin&#xA;Create Table dimPromotion (&#xA;&#x9;[PromotionKey]&#x9;&#x9;&#x9;&#x9;[int] PRIMARY KEY,&#xA;&#x9;[PromotionAlternateKey]&#x9;&#x9;[int] NULL,&#xA;&#x9;[EnglishPromotionName]&#x9;&#x9;[varchar](50) NULL,&#xA;&#x9;[SpanishPromotionName]&#x9;&#x9;[varchar](50) NULL,&#xA;&#x9;[FrenchPromotionName]&#x9;&#x9;[varchar](50) NULL,&#xA;&#x9;[DiscountPct]&#x9;&#x9;&#x9;&#x9;[int] NULL,&#xA;&#x9;[EnglishPromotionType]&#x9;&#x9;[varchar](50) NULL,&#xA;&#x9;[SpanishPromotionType]&#x9;&#x9;[varchar](50) NULL,&#xA;&#x9;[FrenchPromotionType]&#x9;&#x9;[varchar](50) NULL,&#xA;&#x9;[EnglishPromotionCategory]&#x9;[varchar](50) NULL,&#xA;&#x9;[SpanishPromotionCategory]&#x9;[varchar](50) NULL,&#xA;&#x9;[FrenchPromotionCategory]&#x9;[varchar](50) NULL,&#xA;&#x9;[StartDate]&#x9;&#x9;&#x9;&#x9;&#x9;Datetime NULL,&#xA;&#x9;[EndDate]&#x9;&#x9;&#x9;&#x9;&#x9;Datetime NULL,&#xA;&#x9;[MinQty]&#x9;&#x9;&#x9;&#x9;&#x9;[int] NULL,&#xA;&#x9;[MaxQty]&#x9;&#x9;&#x9;&#x9;&#x9;[int] NULL,&#xA;&#x9;[CreateDate]&#x9;&#x9;&#x9;&#x9;Datetime NULL,&#xA;&#x9;[ModifiedDate]&#x9;&#x9;&#x9;&#x9;Datetime NULL,&#xA;&#x9;[ETLDate]&#x9;&#x9;&#x9;&#x9;&#x9;[datetime] NULL&#xA;)&#xA;END&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Get Variable"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{4674D5EF-24D4-4232-B0CB-B283E4450EF4}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get Variable"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{980D4FA3-1FBC-465E-9516-A97B784924AE}"
+          SQLTask:SqlStatementSource="SELECT CONVERT(varchar,MAX(CreateDate),121)AS MaxCreateDate,CONVERT(varchar,MAX(ModifiedDate),121)AS MaxModifiedDate,&#xA;CONVERT(varchar,MAX(ETLDate),121)AS MaxETLDate&#xA;FROM dimPromotion"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="MaxCreateDate"
+            SQLTask:DtsVariableName="User::vMaxCreateDate" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="MaxModifiedDate"
+            SQLTask:DtsVariableName="User::vMaxModifiedDate" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="MaxETLDate"
+            SQLTask:DtsVariableName="User::vMaxETLDate" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Insert to Dim"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{1BBE3772-E3CB-4D45-9CE9-49C5E96D83C3}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Insert to Dim"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Insert to Dim\Data Conversion"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[EnglishPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionName"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[SpanishPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionName"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[FrenchPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionName"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[EnglishPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionType"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[SpanishPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionType"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[FrenchPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionType"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[EnglishPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionCategory"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[SpanishPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionCategory"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[FrenchPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionCategory"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[StartDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="StartDate"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[StartDate]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[EndDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EndDate"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EndDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionName]"
+                      name="Copy of EnglishPromotionName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionName]"
+                      name="Copy of SpanishPromotionName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionName]"
+                      name="Copy of FrenchPromotionName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionType]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionType]"
+                      name="Copy of EnglishPromotionType"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionType]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionType]"
+                      name="Copy of SpanishPromotionType"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionType]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionType]"
+                      name="Copy of FrenchPromotionType"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionCategory]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionCategory]"
+                      name="Copy of EnglishPromotionCategory"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionCategory]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionCategory]"
+                      name="Copy of SpanishPromotionCategory"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionCategory]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionCategory]"
+                      name="Copy of FrenchPromotionCategory"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of StartDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of StartDate]"
+                      name="Copy of StartDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[StartDate]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EndDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EndDate]"
+                      name="Copy of EndDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EndDate]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Insert to Dim\Derived Column"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Derived Column"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Insert to Dim\Derived Column.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Insert to Dim\Derived Column.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Insert to Dim\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert to Dim\Derived Column.Outputs[Derived Column Output].Columns[d_ETLDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Insert to Dim\Derived Column.Outputs[Derived Column Output].Columns[d_ETLDate]"
+                      name="d_ETLDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[GETDATE]()</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">GETDATE()</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Insert to Dim\Derived Column.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Insert to Dim\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert to Dim\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert to Dim\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert to Dim\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Insert to Dim\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[dimPromotion]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Insert to Dim\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="{980D4FA3-1FBC-465E-9516-A97B784924AE}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[PromotionKey]"
+                      cachedDataType="i4"
+                      cachedName="PromotionKey"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PromotionKey]"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionKey]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[PromotionAlternateKey]"
+                      cachedDataType="i4"
+                      cachedName="PromotionAlternateKey"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PromotionAlternateKey]"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[DiscountPct]"
+                      cachedDataType="i4"
+                      cachedName="DiscountPct"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DiscountPct]"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[DiscountPct]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[MinQty]"
+                      cachedDataType="i4"
+                      cachedName="MinQty"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MinQty]"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[MinQty]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[MaxQty]"
+                      cachedDataType="i4"
+                      cachedName="MaxQty"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MaxQty]"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[MaxQty]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CreateDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="CreateDate"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CreateDate]"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreateDate]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ModifiedDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="ModifiedDate"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ModifiedDate]"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[ModifiedDate]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[d_ETLDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="d_ETLDate"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ETLDate]"
+                      lineageId="Package\Insert to Dim\Derived Column.Outputs[Derived Column Output].Columns[d_ETLDate]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of EnglishPromotionName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of EnglishPromotionName"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionName]"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionName]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of SpanishPromotionName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of SpanishPromotionName"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionName]"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionName]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of FrenchPromotionName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of FrenchPromotionName"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionName]"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionName]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of EnglishPromotionType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of EnglishPromotionType"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionType]"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionType]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of SpanishPromotionType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of SpanishPromotionType"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionType]"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionType]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of FrenchPromotionType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of FrenchPromotionType"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionType]"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionType]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of EnglishPromotionCategory]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of EnglishPromotionCategory"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionCategory]"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of SpanishPromotionCategory]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of SpanishPromotionCategory"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionCategory]"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of FrenchPromotionCategory]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of FrenchPromotionCategory"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionCategory]"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of StartDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="Copy of StartDate"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[StartDate]"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of StartDate]" />
+                    <inputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of EndDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="Copy of EndDate"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EndDate]"
+                      lineageId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EndDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PromotionKey]"
+                      dataType="i4"
+                      name="PromotionKey" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PromotionAlternateKey]"
+                      dataType="i4"
+                      name="PromotionAlternateKey" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="EnglishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="SpanishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="FrenchPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DiscountPct]"
+                      dataType="i4"
+                      name="DiscountPct" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="EnglishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="SpanishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="FrenchPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionCategory]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="EnglishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionCategory]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="SpanishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionCategory]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="FrenchPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[StartDate]"
+                      dataType="dbTimeStamp"
+                      name="StartDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EndDate]"
+                      dataType="dbTimeStamp"
+                      name="EndDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MinQty]"
+                      dataType="i4"
+                      name="MinQty" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MaxQty]"
+                      dataType="i4"
+                      name="MaxQty" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CreateDate]"
+                      dataType="dbTimeStamp"
+                      name="CreateDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ModifiedDate]"
+                      dataType="dbTimeStamp"
+                      name="ModifiedDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      name="ETLDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Insert to Dim\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert to Dim\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert to Dim\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Insert to Dim\OLE DB Source"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="OLE DB Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">Select * From stgPromotion
+Where convert(varchar,createdate,121)&gt;?</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping">"Parameter0:Input",{24498831-04F4-494F-9E5F-CE3710CDD86D};</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Insert to Dim\OLE DB Source.Connections[OleDbConnection]"
+                  connectionManagerID="{980D4FA3-1FBC-465E-9516-A97B784924AE}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionKey]"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionKey]"
+                      name="PromotionKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionAlternateKey]"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]"
+                      name="PromotionAlternateKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionName]"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]"
+                      name="EnglishPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionName]"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]"
+                      name="SpanishPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionName]"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]"
+                      name="FrenchPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[DiscountPct]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DiscountPct]"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[DiscountPct]"
+                      name="DiscountPct"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionType]"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]"
+                      name="EnglishPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionType]"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]"
+                      name="SpanishPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionType]"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]"
+                      name="FrenchPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]"
+                      name="EnglishPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]"
+                      name="SpanishPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]"
+                      name="FrenchPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[StartDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[StartDate]"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[StartDate]"
+                      name="StartDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EndDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EndDate]"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EndDate]"
+                      name="EndDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[MinQty]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MinQty]"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[MinQty]"
+                      name="MinQty"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[MaxQty]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MaxQty]"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[MaxQty]"
+                      name="MaxQty"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreateDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CreateDate]"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreateDate]"
+                      name="CreateDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[ModifiedDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ModifiedDate]"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[ModifiedDate]"
+                      name="ModifiedDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ETLDate]"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[ETLDate]"
+                      name="ETLDate"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionKey]"
+                      dataType="i4"
+                      name="PromotionKey" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionAlternateKey]"
+                      dataType="i4"
+                      name="PromotionAlternateKey" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DiscountPct]"
+                      dataType="i4"
+                      name="DiscountPct" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[StartDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="StartDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EndDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="EndDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MinQty]"
+                      dataType="i4"
+                      name="MinQty" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MaxQty]"
+                      dataType="i4"
+                      name="MaxQty" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CreateDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="CreateDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ModifiedDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="ModifiedDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      name="ETLDate" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionKey]"
+                      dataType="i4"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionKey]"
+                      name="PromotionKey" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionAlternateKey]"
+                      dataType="i4"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionAlternateKey]"
+                      name="PromotionAlternateKey" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionName]"
+                      name="EnglishPromotionName" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionName]"
+                      name="SpanishPromotionName" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionName]"
+                      name="FrenchPromotionName" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DiscountPct]"
+                      dataType="i4"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DiscountPct]"
+                      name="DiscountPct" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionType]"
+                      name="EnglishPromotionType" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionType]"
+                      name="SpanishPromotionType" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionType]"
+                      name="FrenchPromotionType" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionCategory]"
+                      name="EnglishPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionCategory]"
+                      name="SpanishPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionCategory]"
+                      name="FrenchPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[StartDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[StartDate]"
+                      name="StartDate" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EndDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EndDate]"
+                      name="EndDate" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MinQty]"
+                      dataType="i4"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MinQty]"
+                      name="MinQty" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MaxQty]"
+                      dataType="i4"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MaxQty]"
+                      name="MaxQty" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CreateDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CreateDate]"
+                      name="CreateDate" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ModifiedDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ModifiedDate]"
+                      name="ModifiedDate" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ETLDate]"
+                      name="ETLDate" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Insert to Dim.Paths[Data Conversion Output]"
+              endId="Package\Insert to Dim\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\Insert to Dim\Data Conversion.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Insert to Dim.Paths[Derived Column Output]"
+              endId="Package\Insert to Dim\Data Conversion.Inputs[Data Conversion Input]"
+              name="Derived Column Output"
+              startId="Package\Insert to Dim\Derived Column.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Insert to Dim.Paths[OLE DB Source Output]"
+              endId="Package\Insert to Dim\Derived Column.Inputs[Derived Column Input]"
+              name="OLE DB Source Output"
+              startId="Package\Insert to Dim\OLE DB Source.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update to Dim"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{AAC9F26C-40CA-430E-A2E6-C4DB64DD0275}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update to Dim"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Update to Dim\Data Conversion"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[EnglishPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionName"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[SpanishPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionName"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[FrenchPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionName"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[EnglishPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionType"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[SpanishPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionType"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[FrenchPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionType"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[EnglishPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionCategory"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[SpanishPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionCategory"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[FrenchPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionCategory"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[StartDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="StartDate"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[StartDate]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input].Columns[EndDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EndDate"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EndDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionName]"
+                      name="Copy of EnglishPromotionName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionName]"
+                      name="Copy of SpanishPromotionName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionName]"
+                      name="Copy of FrenchPromotionName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionType]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionType]"
+                      name="Copy of EnglishPromotionType"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionType]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionType]"
+                      name="Copy of SpanishPromotionType"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionType]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionType]"
+                      name="Copy of FrenchPromotionType"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionCategory]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionCategory]"
+                      name="Copy of EnglishPromotionCategory"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionCategory]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionCategory]"
+                      name="Copy of SpanishPromotionCategory"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionCategory]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionCategory]"
+                      name="Copy of FrenchPromotionCategory"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of StartDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of StartDate]"
+                      name="Copy of StartDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[StartDate]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EndDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EndDate]"
+                      name="Copy of EndDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EndDate]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Update to Dim\OLE DB Command"
+              componentClassID="Microsoft.OLEDBCommand"
+              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
+              name="OLE DB Command"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">Update dimPromotion
+Set [PromotionAlternateKey]		=?,
+	[EnglishPromotionName]		=?,
+	[SpanishPromotionName]		=?,
+	[FrenchPromotionName]		=?,
+	[DiscountPct]				=?,
+	[EnglishPromotionType]		=?,
+	[SpanishPromotionType]		=?,
+	[FrenchPromotionType]		=?,
+	[EnglishPromotionCategory]	=?,
+	[SpanishPromotionCategory]	=?,
+	[FrenchPromotionCategory]	=?,
+	[StartDate]					=?,
+	[EndDate]					=?,
+	[MinQty]					=?,
+	[MaxQty]					=?,
+	[CreateDate]				=?,
+	[ModifiedDate]				=?,
+	[ETLDate]					=GETDATE()
+Where PromotionKey=?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Update to Dim\OLE DB Command.Connections[OleDbConnection]"
+                  connectionManagerID="{980D4FA3-1FBC-465E-9516-A97B784924AE}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input]"
+                  errorOrTruncationOperation="Command Execution"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Command Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[PromotionAlternateKey]"
+                      cachedDataType="i4"
+                      cachedName="PromotionAlternateKey"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[DiscountPct]"
+                      cachedDataType="i4"
+                      cachedName="DiscountPct"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[DiscountPct]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[MinQty]"
+                      cachedDataType="i4"
+                      cachedName="MinQty"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_13]"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[MinQty]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[MaxQty]"
+                      cachedDataType="i4"
+                      cachedName="MaxQty"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_14]"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[MaxQty]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[CreateDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="CreateDate"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_15]"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreateDate]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[ModifiedDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="ModifiedDate"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_16]"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[ModifiedDate]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[PromotionKey]"
+                      cachedDataType="i4"
+                      cachedName="PromotionKey"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_17]"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionKey]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[Copy of EnglishPromotionName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of EnglishPromotionName"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionName]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[Copy of SpanishPromotionName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of SpanishPromotionName"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionName]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[Copy of FrenchPromotionName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of FrenchPromotionName"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionName]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[Copy of EnglishPromotionType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of EnglishPromotionType"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionType]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[Copy of SpanishPromotionType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of SpanishPromotionType"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionType]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[Copy of FrenchPromotionType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of FrenchPromotionType"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_7]"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionType]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[Copy of EnglishPromotionCategory]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of EnglishPromotionCategory"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_8]"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EnglishPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[Copy of SpanishPromotionCategory]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of SpanishPromotionCategory"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_9]"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of SpanishPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[Copy of FrenchPromotionCategory]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Copy of FrenchPromotionCategory"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_10]"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of FrenchPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[Copy of StartDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="Copy of StartDate"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_11]"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of StartDate]" />
+                    <inputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].Columns[Copy of EndDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="Copy of EndDate"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_12]"
+                      lineageId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of EndDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      dataType="i4"
+                      name="Param_0">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Param_1">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Param_2">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Param_3">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      dataType="i4"
+                      name="Param_4">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Param_5">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Param_6">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_7]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Param_7">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_8]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Param_8">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_9]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Param_9">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_10]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Param_10">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_11]"
+                      dataType="dbTimeStamp"
+                      name="Param_11">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_12]"
+                      dataType="dbTimeStamp"
+                      name="Param_12">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_13]"
+                      dataType="i4"
+                      name="Param_13">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_14]"
+                      dataType="i4"
+                      name="Param_14">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_15]"
+                      dataType="dbTimeStamp"
+                      name="Param_15">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_16]"
+                      dataType="dbTimeStamp"
+                      name="Param_16">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_17]"
+                      dataType="i4"
+                      name="Param_17">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Update to Dim\OLE DB Command.Outputs[OLE DB Command Output]"
+                  exclusionGroup="1"
+                  name="OLE DB Command Output"
+                  synchronousInputId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Update to Dim\OLE DB Command.Outputs[OLE DB Command Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Command Error Output"
+                  synchronousInputId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Update to Dim\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Update to Dim\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Update to Dim\OLE DB Source"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="OLE DB Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">Select * From stgPromotion
+Where Convert(varchar,modifieddate,121)&gt;? and Convert(varchar,etldate,121)&gt;?</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping">"Parameter0:Input",{37A6371D-1220-4F60-98CE-9B86F1369C24};"Parameter1:Input",{1CFB5CF9-F836-406D-B9E4-D3AE17614BEA};</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Update to Dim\OLE DB Source.Connections[OleDbConnection]"
+                  connectionManagerID="{980D4FA3-1FBC-465E-9516-A97B784924AE}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionKey]"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionKey]"
+                      name="PromotionKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionAlternateKey]"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]"
+                      name="PromotionAlternateKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionName]"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]"
+                      name="EnglishPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionName]"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]"
+                      name="SpanishPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionName]"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]"
+                      name="FrenchPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[DiscountPct]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DiscountPct]"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[DiscountPct]"
+                      name="DiscountPct"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionType]"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]"
+                      name="EnglishPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionType]"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]"
+                      name="SpanishPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionType]"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]"
+                      name="FrenchPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]"
+                      name="EnglishPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]"
+                      name="SpanishPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]"
+                      name="FrenchPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[StartDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[StartDate]"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[StartDate]"
+                      name="StartDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EndDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EndDate]"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[EndDate]"
+                      name="EndDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[MinQty]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MinQty]"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[MinQty]"
+                      name="MinQty"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[MaxQty]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MaxQty]"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[MaxQty]"
+                      name="MaxQty"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreateDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CreateDate]"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreateDate]"
+                      name="CreateDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[ModifiedDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ModifiedDate]"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[ModifiedDate]"
+                      name="ModifiedDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ETLDate]"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].Columns[ETLDate]"
+                      name="ETLDate"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionKey]"
+                      dataType="i4"
+                      name="PromotionKey" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionAlternateKey]"
+                      dataType="i4"
+                      name="PromotionAlternateKey" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DiscountPct]"
+                      dataType="i4"
+                      name="DiscountPct" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[StartDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="StartDate" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EndDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="EndDate" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MinQty]"
+                      dataType="i4"
+                      name="MinQty" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MaxQty]"
+                      dataType="i4"
+                      name="MaxQty" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CreateDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="CreateDate" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ModifiedDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="ModifiedDate" />
+                    <externalMetadataColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      name="ETLDate" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionKey]"
+                      dataType="i4"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionKey]"
+                      name="PromotionKey" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionAlternateKey]"
+                      dataType="i4"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionAlternateKey]"
+                      name="PromotionAlternateKey" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionName]"
+                      name="EnglishPromotionName" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionName]"
+                      name="SpanishPromotionName" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionName]"
+                      name="FrenchPromotionName" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DiscountPct]"
+                      dataType="i4"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DiscountPct]"
+                      name="DiscountPct" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionType]"
+                      name="EnglishPromotionType" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionType]"
+                      name="SpanishPromotionType" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionType]"
+                      name="FrenchPromotionType" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionCategory]"
+                      name="EnglishPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionCategory]"
+                      name="SpanishPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionCategory]"
+                      name="FrenchPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[StartDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[StartDate]"
+                      name="StartDate" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EndDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EndDate]"
+                      name="EndDate" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MinQty]"
+                      dataType="i4"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MinQty]"
+                      name="MinQty" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MaxQty]"
+                      dataType="i4"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MaxQty]"
+                      name="MaxQty" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CreateDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CreateDate]"
+                      name="CreateDate" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ModifiedDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ModifiedDate]"
+                      name="ModifiedDate" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ETLDate]"
+                      name="ETLDate" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Update to Dim.Paths[Data Conversion Output]"
+              endId="Package\Update to Dim\OLE DB Command.Inputs[OLE DB Command Input]"
+              name="Data Conversion Output"
+              startId="Package\Update to Dim\Data Conversion.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Update to Dim.Paths[OLE DB Source Output]"
+              endId="Package\Update to Dim\Data Conversion.Inputs[Data Conversion Input]"
+              name="OLE DB Source Output"
+              startId="Package\Update to Dim\OLE DB Source.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{9AE7281A-FB31-4CC7-B2AF-B610FD174073}"
+      DTS:From="Package\Create Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Add Unknown and Not Available Values" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{37691BE0-042E-4C06-9D82-CF3072E0AAEA}"
+      DTS:From="Package\Add Unknown and Not Available Values"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Get Variable" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{909535E3-4B05-4AD6-B34E-27E35555396A}"
+      DTS:From="Package\Get Variable"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Insert to Dim" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{9436B41A-0111-4DE8-8BD4-3956083A4D92}"
+      DTS:From="Package\Get Variable"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\Update to Dim" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="264,42"
+          Id="Package\Add Unknown and Not Available Values"
+          TopLeft="50.5,90.5" />
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Create Table"
+          TopLeft="93.5,12.5" />
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Get Variable"
+          TopLeft="351.5,89.5" />
+        <NodeLayout
+          Size="141,42"
+          Id="Package\Insert to Dim"
+          TopLeft="485.5,199.5" />
+        <NodeLayout
+          Size="147,42"
+          Id="Package\Update to Dim"
+          TopLeft="225.5,199.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="178.75,54.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="314.5,111">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="37,0"
+              Start="0,0"
+              End="29.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="29.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="458.833333333333,131.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="97.1666666666667,68"
+              Start="0,0"
+              End="97.1666666666667,60.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.5965978128797" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.5965978128797"
+                    Point2="0,27.5965978128797"
+                    Point3="4,27.5965978128797" />
+                  <mssgle:LineSegment
+                    End="93.1666666666667,27.5965978128797" />
+                  <mssgle:CubicBezierSegment
+                    Point1="93.1666666666667,27.5965978128797"
+                    Point2="97.1666666666667,27.5965978128797"
+                    Point3="97.1666666666667,31.5965978128797" />
+                  <mssgle:LineSegment
+                    End="97.1666666666667,60.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="407.166666666667,131.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-108.166666666667,68"
+              Start="0,0"
+              End="-108.166666666667,60.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.5965978128797" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.5965978128797"
+                    Point2="0,27.5965978128797"
+                    Point3="-4,27.5965978128797" />
+                  <mssgle:LineSegment
+                    End="-104.166666666667,27.5965978128797" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-104.166666666667,27.5965978128797"
+                    Point2="-108.166666666667,27.5965978128797"
+                    Point3="-108.166666666667,31.5965978128797" />
+                  <mssgle:LineSegment
+                    End="-108.166666666667,60.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Insert to Dim">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Insert to Dim\OLE DB Destination"
+          TopLeft="456.5,159.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Insert to Dim\OLE DB Source"
+          TopLeft="36.5,33.5" />
+        <NodeLayout
+          Size="154,42"
+          Id="Package\Insert to Dim\Derived Column"
+          TopLeft="229.5,39.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\Insert to Dim\Data Conversion"
+          TopLeft="225.5,125.5" />
+        <EdgeLayout
+          Id="Package\Insert to Dim.Paths[Data Conversion Output]"
+          TopLeft="381.5,146.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="75,34"
+              Start="0,0"
+              End="67.5,34">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="33.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="33.5,0"
+                    Point2="37.5,0"
+                    Point3="37.5,4" />
+                  <mssgle:LineSegment
+                    End="37.5,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="37.5,30"
+                    Point2="37.5,34"
+                    Point3="41.5,34" />
+                  <mssgle:LineSegment
+                    End="67.5,34" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Insert to Dim.Paths[OLE DB Source Output]"
+          TopLeft="186.5,57.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="43,0"
+              Start="0,0"
+              End="35.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="35.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Insert to Dim.Paths[Derived Column Output]"
+          TopLeft="305,81.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,44"
+              Start="0,0"
+              End="0,36.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,36.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Insert to Dim\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Insert to Dim\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Update to Dim">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Update to Dim\OLE DB Source"
+          TopLeft="88.5,11.5" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\Update to Dim\OLE DB Command"
+          TopLeft="254.5,63.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\Update to Dim\Data Conversion"
+          TopLeft="88.5,165.5" />
+        <EdgeLayout
+          Id="Package\Update to Dim.Paths[Data Conversion Output]"
+          TopLeft="191.166666666667,165.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="146.333333333333,-60"
+              Start="0,0"
+              End="146.333333333333,-52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-20.3654822335025" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-20.3654822335025"
+                    Point2="0,-24.3654822335025"
+                    Point3="4,-24.3654822335025" />
+                  <mssgle:LineSegment
+                    End="142.333333333333,-24.3654822335025" />
+                  <mssgle:CubicBezierSegment
+                    Point1="142.333333333333,-24.3654822335025"
+                    Point2="146.333333333333,-24.3654822335025"
+                    Point3="146.333333333333,-28.3654822335025" />
+                  <mssgle:LineSegment
+                    End="146.333333333333,-52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Update to Dim.Paths[OLE DB Source Output]"
+          TopLeft="165,53.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,112"
+              Start="0,0"
+              End="0,104.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,104.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Update to Dim\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
