@@ -1,4 +1,4 @@
-# Data Engineer Project 
+![image](https://github.com/ariefiandarakha/DataEngineer/assets/70312661/42d8b179-4d67-4ccb-96a8-8ac15afeaf4e)# Data Engineer Project 
 
 # Scenario
 Seorang data engineer yang bekerja untuk perusahaan sepeda. Perusahaan menjual dan mendistribusikan produk ke beberapa negara seperti Amerika Serikat, Kanada, Perancis, Jerman, Australia, dan Inggris. Produk yang diperjualkan adalah berbagai macam sepeda seperti sepeda gunung, sepeda jalan ataupun sepeda tour, serta menyediakan _spare part_ juga. Perusahaan ingin membuat suatu database untuk mendata _product_, kategori dan sub-kategori _product_, _customer_, wilayah penjualan, dan juga hasil penjualannya. Output yang diinginkan adalah Dashboard berupa data _customer summary_,_product summary_, dan _top product sales distribution_
@@ -884,3 +884,74 @@ Left Join dimDate as dd on ss.OrderDateKey=dd.DateKey
 Where convert(varchar,ss.etldate,121)>?
 ```
 Kemudian menambahkan kolom ETLDate  dengan _derive column_ lalu dilanjutkan dengan konversi tipe data, dan masuk ke tahap _lookup_ data dengan _SalesKey_  sebagai _unique key_. Apabila _SalesKey_ tersebut sudah ada di tabel maka tidak akan dilakukan apa-apa, namun apabila belum ada di tabel maka akan dilakukan proses _insert_ ke tabel Fact Sales.
+
+# OLAP
+Kemudian dilakukan analisis untuk mengukur beberapa KPI yang diperlukan untuk kebutuhan dashboard. Dengan menggunakan data dari FactSales dan penggunaan DAX pada nilai tersebut maka akan didapatkan beberapa KPI seperti yang akan ditunjukkan di bawah.
+
+### Total Sales
+```TotalSales:=SUM(FactSales[SalesAmount])```
+
+### Sales Quantity
+```SalesQty:=COUNT(FactSales[SalesKey])```
+
+### Sales Last Month
+```Sales Last Month:=CALCULATE([TotalSales],DATEADD(dimDate[FullDate],-1,MONTH))```
+
+### Sales Last Year
+```Sales Last Year:=CALCULATE([TotalSales], SAMEPERIODLASTYEAR('dimDate'[FullDate]))```
+
+### Total Product Sold
+```Total Product Sold:=DISTINCTCOUNT(FactSales[ProductKey])```
+
+### Total Order Quantity
+```TotalOrderQuantity:=SUM(FactSales[OrderQuantity])```
+
+### Total Customer
+```Total Customer:=COUNT(dimCustomer[CustomerKey])```
+
+### Total Customer Transaction
+```Total Customer Transaction:=COUNT(FactSales[CustomerKey])```
+
+### Total Males Customer
+```Total Males Customer:=CALCULATE(DISTINCTCOUNT(FactSales[CustomerKey]),dimCustomer[Gender]=="M")```
+
+### Total Female Customer
+```Total Females Customer:=CALCULATE(DISTINCTCOUNT(FactSales[CustomerKey]),dimCustomer[Gender]=="F")```
+
+### Total Married Customer
+```Total Married Customer:=CALCULATE(DISTINCTCOUNT(FactSales[CustomerKey]),dimCustomer[MaritalStatus]=="M")```
+
+### Total Single Customer
+```Total SingleCustomer:=CALCULATE(DISTINCTCOUNT(FactSales[CustomerKey]),dimCustomer[MaritalStatus]=="S")```
+
+# Visualisasi Data
+
+## Customer Sales Summary
+![image](https://github.com/ariefiandarakha/DataEngineer/assets/70312661/b12d6727-1b74-4e80-ac63-defbde2cc2a5)
+
+Dapat membantu mengetahui segmentasi dari customer berdasarkan gender, status pernikahan, wilayah. Dan juga mengetahui beberapa KPI seperti :
+	1. Total Penjualan
+ 	2. Total Transaksi
+  	3. Total Customer Pria
+   	4. Total Customer Wanita
+    	5. Total Customer Sudah Menikah
+     	6. Total Customer Belum Menikah
+      	7. Trend Penjualan per Bulan
+
+## Product Sales Summary
+![image](https://github.com/ariefiandarakha/DataEngineer/assets/70312661/b6fd571b-1971-4fb9-ba13-50d0832653b7)
+
+Dapat membantu mengetahui beberapa KPI seperti :
+	1. Total banyaknya penjualan produk
+ 	2. Banyaknya transaksi
+  	3. Penjualan produk berdasarkan warna produk
+   	4. Trend Penjualan per bulan
+    	5. Rincian/Detail Penjualan per produk dalam bulan dan tahun
+
+## Product Trend and Sales Distribution
+![image](https://github.com/ariefiandarakha/DataEngineer/assets/70312661/07905389-2f39-4689-b0bd-489f44d60003)
+
+dapat membantu mengetahui informasi mengenai :
+	1. Persentase penjualan produk
+ 	2. Trend penjualan produk setiap bulan dalam setahun
+  	3. Penjualan produk berdasarkan dari wilayah
