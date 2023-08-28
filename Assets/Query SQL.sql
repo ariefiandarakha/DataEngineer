@@ -514,7 +514,7 @@ Select Distinct
 			WHEN ProductSubCategoryKey = 37	THEN 'Tire'
 		END as ProductSubCategoryNameEnglish,
 		CASE
-			WHEN ProductSubCategoryKey = 1	THEN 'Bicicleta de montaña'
+			WHEN ProductSubCategoryKey = 1	THEN 'Bicicleta de montaÃ±a'
 			WHEN ProductSubCategoryKey = 2	THEN 'Bicicleta de carretera'
 			WHEN ProductSubCategoryKey = 3	THEN 'Bicicleta de paseo'
 			WHEN ProductSubCategoryKey = 4	THEN 'Manillar'
@@ -525,7 +525,7 @@ Select Distinct
 			WHEN ProductSubCategoryKey = 9	THEN 'Desviador'
 			WHEN ProductSubCategoryKey = 10	THEN 'Horquilla'
 			WHEN ProductSubCategoryKey = 11	THEN 'Direccion'
-			WHEN ProductSubCategoryKey = 12	THEN 'Cuadro de montaña'
+			WHEN ProductSubCategoryKey = 12	THEN 'Cuadro de montaÃ±a'
 			WHEN ProductSubCategoryKey = 13	THEN 'Pedal'
 			WHEN ProductSubCategoryKey = 14	THEN 'Cuadro de carretera'
 			WHEN ProductSubCategoryKey = 15	THEN 'Sill in/asiento'
@@ -553,24 +553,24 @@ Select Distinct
 			WHEN ProductSubCategoryKey = 37	THEN 'Cubierta'
 		END as ProductSubCategoryNameSpanish,
 		CASE
-			WHEN ProductSubCategoryKey = 1	THEN 'Vélo de montagne'
-			WHEN ProductSubCategoryKey = 2	THEN 'Vélo de route'
-			WHEN ProductSubCategoryKey = 3	THEN 'Vélo de randonnée'
-			WHEN ProductSubCategoryKey = 4	THEN 'Poignées'
-			WHEN ProductSubCategoryKey = 5	THEN 'Axe de Pédalier'
+			WHEN ProductSubCategoryKey = 1	THEN 'VÃ©lo de montagne'
+			WHEN ProductSubCategoryKey = 2	THEN 'VÃ©lo de route'
+			WHEN ProductSubCategoryKey = 3	THEN 'VÃ©lo de randonnÃ©e'
+			WHEN ProductSubCategoryKey = 4	THEN 'PoignÃ©es'
+			WHEN ProductSubCategoryKey = 5	THEN 'Axe de PÃ©dalier'
 			WHEN ProductSubCategoryKey = 6	THEN 'Freins'
 			WHEN ProductSubCategoryKey = 7	THEN 'Chaines'
-			WHEN ProductSubCategoryKey = 8	THEN 'Pédalier'
-			WHEN ProductSubCategoryKey = 9	THEN 'Dérailleur'
+			WHEN ProductSubCategoryKey = 8	THEN 'PÃ©dalier'
+			WHEN ProductSubCategoryKey = 9	THEN 'DÃ©railleur'
 			WHEN ProductSubCategoryKey = 10	THEN 'Fourche'
 			WHEN ProductSubCategoryKey = 11	THEN 'Jeu de Direction'
-			WHEN ProductSubCategoryKey = 12	THEN 'Cadre de Vélo de montagne'
-			WHEN ProductSubCategoryKey = 13	THEN 'Pédale'
-			WHEN ProductSubCategoryKey = 14	THEN 'Cadre de Vélo de route'
+			WHEN ProductSubCategoryKey = 12	THEN 'Cadre de VÃ©lo de montagne'
+			WHEN ProductSubCategoryKey = 13	THEN 'PÃ©dale'
+			WHEN ProductSubCategoryKey = 14	THEN 'Cadre de VÃ©lo de route'
 			WHEN ProductSubCategoryKey = 15	THEN 'Selle'
-			WHEN ProductSubCategoryKey = 16	THEN 'Cadre de Vélo de randonnée'
+			WHEN ProductSubCategoryKey = 16	THEN 'Cadre de VÃ©lo de randonnÃ©e'
 			WHEN ProductSubCategoryKey = 17	THEN 'Roue'
-			WHEN ProductSubCategoryKey = 18	THEN 'cuissard à bretelles'
+			WHEN ProductSubCategoryKey = 18	THEN 'cuissard Ã  bretelles'
 			WHEN ProductSubCategoryKey = 19	THEN 'Casquette'
 			WHEN ProductSubCategoryKey = 20	THEN 'Gants'
 			WHEN ProductSubCategoryKey = 21	THEN 'Mailot Manches avec Logo'
@@ -578,8 +578,8 @@ Select Distinct
 			WHEN ProductSubCategoryKey = 23	THEN 'Chaussettes'
 			WHEN ProductSubCategoryKey = 24	THEN 'Collants pour Femmes'
 			WHEN ProductSubCategoryKey = 25	THEN 'Veste'
-			WHEN ProductSubCategoryKey = 26	THEN 'Étagère'
-			WHEN ProductSubCategoryKey = 27	THEN 'Support à vélo'
+			WHEN ProductSubCategoryKey = 26	THEN 'Ã‰tagÃ¨re'
+			WHEN ProductSubCategoryKey = 27	THEN 'Support Ã  vÃ©lo'
 			WHEN ProductSubCategoryKey = 28	THEN 'Bouteille d eau'
 			WHEN ProductSubCategoryKey = 29	THEN 'Dissolvant'
 			WHEN ProductSubCategoryKey = 30	THEN 'Jeu de Garde-boue'
@@ -622,10 +622,10 @@ CASE
 					WHEN ProductSubcategoryKey IN (28,29,32) THEN 'Accesorios de ciclismo'
 				END as ProductCategoryNameSpanish,
 				CASE
-					WHEN ProductSubcategoryKey IN (1,2,3) THEN 'Nom du vélo'
-					WHEN ProductSubcategoryKey IN (4,5,6,7,8,9,10,11,13,15,17,26,27,30,33,34,35,36,37) THEN 'Vélo Pièce De Rechange'
-					WHEN ProductSubcategoryKey IN (12,14,16) THEN 'Cadre de vélo'
-					WHEN ProductSubcategoryKey IN (18,19,20,21,22,23,24,25,31) THEN 'Vêtements de cyclisme'
+					WHEN ProductSubcategoryKey IN (1,2,3) THEN 'Nom du vÃ©lo'
+					WHEN ProductSubcategoryKey IN (4,5,6,7,8,9,10,11,13,15,17,26,27,30,33,34,35,36,37) THEN 'VÃ©lo PiÃ¨ce De Rechange'
+					WHEN ProductSubcategoryKey IN (12,14,16) THEN 'Cadre de vÃ©lo'
+					WHEN ProductSubcategoryKey IN (18,19,20,21,22,23,24,25,31) THEN 'VÃªtements de cyclisme'
 					WHEN ProductSubcategoryKey IN (28,29,32) THEN 'Accessoires de cyclisme'
 				END as ProductCategoryNameFrench
 From stgProduct
@@ -657,10 +657,10 @@ Insert Into dimProductCategory Values
 )
 
 Insert into dimProductCategory Values 
-('1','Bike Name','Nombre de la bicicleta','Nom du vélo'),
-('2','Bike Spare Part','Recambio de bicicleta','Vélo Pièce De Rechange'),
-('3','Bike Frame','El marco de la bicicleta','Cadre de vélo'),
-('4','Cycling Clothing','Ropa de ciclismo','Vêtements de cyclisme'),
+('1','Bike Name','Nombre de la bicicleta','Nom du vÃ©lo'),
+('2','Bike Spare Part','Recambio de bicicleta','VÃ©lo PiÃ¨ce De Rechange'),
+('3','Bike Frame','El marco de la bicicleta','Cadre de vÃ©lo'),
+('4','Cycling Clothing','Ropa de ciclismo','VÃªtements de cyclisme'),
 ('5','Accessories','Accesorios de ciclismo','Accessoires de cyclisme')
 
 
