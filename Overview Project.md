@@ -4,7 +4,7 @@
 Seorang data engineer yang bekerja untuk perusahaan sepeda. Perusahaan menjual dan mendistribusikan produk ke beberapa negara seperti Amerika Serikat, Kanada, Perancis, Jerman, Australia, dan Inggris. Produk yang diperjualkan adalah berbagai macam sepeda seperti sepeda gunung, sepeda jalan ataupun sepeda tour, serta menyediakan _spare part_ juga. Perusahaan ingin membuat suatu database untuk mendata _product_, kategori dan sub-kategori _product_, _customer_, wilayah penjualan, dan juga hasil penjualannya. Output yang diinginkan adalah Dashboard berupa data _customer summary_,_product summary_, dan _top product sales distribution_
 
 # Objective
-  1. Membuat _data lake_ yang berisikan beberapa _stable staging_
+  1. Membuat _data lake_ yang berisikan beberapa _table staging_
   2. Mendesain data warehouse (dim dan fact table)
   3. Membuat Visualisasi Data
 
