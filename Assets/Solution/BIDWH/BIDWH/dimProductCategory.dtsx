@@ -1,0 +1,1570 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/21/2022 8:57:12 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="LAPTOP-6OQM3DLS"
+  DTS:CreatorName="LAPTOP-6OQM3DLS\1374"
+  DTS:DTSID="{70AA17E4-B44C-43B7-BC30-B346A7CBF8FB}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.167"
+  DTS:LocaleID="14345"
+  DTS:ObjectName="dimProductCategory"
+  DTS:PackageType="5"
+  DTS:VersionBuild="19"
+  DTS:VersionGUID="{5D2CC96E-DC84-4F52-889F-57DD8D8975EF}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Add Unknown and Not Available Values"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{FA5B32E3-D6C6-4763-BE68-0D3AAA8EAD5E}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Add Unknown and Not Available Values"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{980D4FA3-1FBC-465E-9516-A97B784924AE}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS(SELECT * FROM dimProductCategory where ProductCategoryKey IN ('-2'))&#xA;Insert Into dimProductCategory Values&#xA;(           '-2'&#xA;           ,'Unknown'&#xA;           ,'Unknown'&#xA;           ,'Unknown'&#xA;,'1900-01-01 00:00:00:000'&#xA;)&#xA;IF NOT EXISTS(SELECT * FROM dimProductCategory where ProductCategoryKey IN ('-1'))&#xA;Insert Into dimProductCategory Values&#xA;(           '-1'&#xA;           ,'Not Available'&#xA;           ,'Not Available'&#xA;           ,'Not Available'&#xA;,'1900-01-01 00:00:00:000'&#xA;)&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Create Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{5CBFC3EB-459C-49AA-AFF8-7910C7D28313}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{980D4FA3-1FBC-465E-9516-A97B784924AE}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS(SELECT * FROM SYSOBJECTS where [name] = 'dimProductCategory' and xtype ='U')&#xA;Begin&#xA;Create Table dimProductCategory (&#xA;&#x9;ProductCategoryKey INT PRIMARY KEY,&#xA;&#x9;ProductCategoryNameEnglish nvarchar(255),&#xA;&#x9;ProductCategoryNameSpanish nvarchar(255),&#xA;&#x9;ProductCategoryNameFrench nvarchar(255),&#xA;&#x9;ETLDate datetime&#xA;)&#xA;End&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Insert into Dim"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{C8C561E6-6F67-480C-BF14-19CAB3050B3E}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Insert into Dim"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Insert into Dim\Add ETLDate Column"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Add ETLDate Column"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Insert into Dim\Add ETLDate Column.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Insert into Dim\Add ETLDate Column.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Insert into Dim\Add ETLDate Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert into Dim\Add ETLDate Column.Outputs[Derived Column Output].Columns[d_ETLDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Insert into Dim\Add ETLDate Column.Outputs[Derived Column Output].Columns[d_ETLDate]"
+                      name="d_ETLDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[GETDATE]()</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">GETDATE()</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Insert into Dim\Add ETLDate Column.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Insert into Dim\Add ETLDate Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert into Dim\Add ETLDate Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert into Dim\Add ETLDate Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert into Dim\Add ETLDate Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert into Dim\Add ETLDate Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Insert into Dim\Data Conversion"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Insert into Dim\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Insert into Dim\Data Conversion.Inputs[Data Conversion Input].Columns[ProductCategoryKey]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="1"
+                      cachedName="ProductCategoryKey"
+                      lineageId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryKey]" />
+                    <inputColumn
+                      refId="Package\Insert into Dim\Data Conversion.Inputs[Data Conversion Input].Columns[ProductCategoryNameEnglish]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="16"
+                      cachedName="ProductCategoryNameEnglish"
+                      lineageId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryNameEnglish]" />
+                    <inputColumn
+                      refId="Package\Insert into Dim\Data Conversion.Inputs[Data Conversion Input].Columns[ProductCategoryNameSpanish]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="24"
+                      cachedName="ProductCategoryNameSpanish"
+                      lineageId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryNameSpanish]" />
+                    <inputColumn
+                      refId="Package\Insert into Dim\Data Conversion.Inputs[Data Conversion Input].Columns[ProductCategoryNameFrench]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="23"
+                      cachedName="ProductCategoryNameFrench"
+                      lineageId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryNameFrench]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Insert into Dim\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryKey]"
+                      name="Copy of ProductCategoryKey"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryKey]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameEnglish]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="255"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameEnglish]"
+                      name="Copy of ProductCategoryNameEnglish"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryNameEnglish]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameSpanish]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="255"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameSpanish]"
+                      name="Copy of ProductCategoryNameSpanish"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryNameSpanish]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameFrench]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="255"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameFrench]"
+                      name="Copy of ProductCategoryNameFrench"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryNameFrench]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Insert into Dim\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Insert into Dim\Insert into Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Insert into Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[dimProductCategory]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Insert into Dim\Insert into Destination.Connections[OleDbConnection]"
+                  connectionManagerID="{980D4FA3-1FBC-465E-9516-A97B784924AE}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].Columns[d_ETLDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="d_ETLDate"
+                      externalMetadataColumnId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].ExternalColumns[ETLDate]"
+                      lineageId="Package\Insert into Dim\Add ETLDate Column.Outputs[Derived Column Output].Columns[d_ETLDate]" />
+                    <inputColumn
+                      refId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].Columns[Copy of ProductCategoryKey]"
+                      cachedDataType="i4"
+                      cachedName="Copy of ProductCategoryKey"
+                      externalMetadataColumnId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductCategoryKey]"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryKey]" />
+                    <inputColumn
+                      refId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].Columns[Copy of ProductCategoryNameEnglish]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Copy of ProductCategoryNameEnglish"
+                      externalMetadataColumnId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductCategoryNameEnglish]"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameEnglish]" />
+                    <inputColumn
+                      refId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].Columns[Copy of ProductCategoryNameSpanish]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Copy of ProductCategoryNameSpanish"
+                      externalMetadataColumnId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductCategoryNameSpanish]"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameSpanish]" />
+                    <inputColumn
+                      refId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].Columns[Copy of ProductCategoryNameFrench]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Copy of ProductCategoryNameFrench"
+                      externalMetadataColumnId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductCategoryNameFrench]"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameFrench]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductCategoryKey]"
+                      dataType="i4"
+                      name="ProductCategoryKey" />
+                    <externalMetadataColumn
+                      refId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductCategoryNameEnglish]"
+                      dataType="wstr"
+                      length="255"
+                      name="ProductCategoryNameEnglish" />
+                    <externalMetadataColumn
+                      refId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductCategoryNameSpanish]"
+                      dataType="wstr"
+                      length="255"
+                      name="ProductCategoryNameSpanish" />
+                    <externalMetadataColumn
+                      refId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductCategoryNameFrench]"
+                      dataType="wstr"
+                      length="255"
+                      name="ProductCategoryNameFrench" />
+                    <externalMetadataColumn
+                      refId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input].ExternalColumns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      name="ETLDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Insert into Dim\Insert into Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert into Dim\Insert into Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert into Dim\Insert into Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert into Dim\Insert into Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert into Dim\Insert into Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Insert into Dim\Overall Lookup"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Overall Lookup"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dimProductCategory]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dimProductCategory]) [refTable]
+where [refTable].[ProductCategoryKey] = ? and [refTable].[ProductCategoryNameEnglish] = ? and [refTable].[ProductCategoryNameSpanish] = ? and [refTable].[ProductCategoryNameFrench] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="ProductCategoryKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductCategoryNameEnglish" dataType="DT_WSTR" length="255" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductCategoryNameSpanish" dataType="DT_WSTR" length="255" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductCategoryNameFrench" dataType="DT_WSTR" length="255" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ETLDate" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryKey]};#{Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameEnglish]};#{Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameSpanish]};#{Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameFrench]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Insert into Dim\Overall Lookup.Connections[OleDbConnection]"
+                  connectionManagerID="{980D4FA3-1FBC-465E-9516-A97B784924AE}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Insert into Dim\Overall Lookup.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Insert into Dim\Overall Lookup.Inputs[Lookup Input].Columns[Copy of ProductCategoryKey]"
+                      cachedDataType="i4"
+                      cachedName="Copy of ProductCategoryKey"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryKey]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ProductCategoryKey</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Insert into Dim\Overall Lookup.Inputs[Lookup Input].Columns[Copy of ProductCategoryNameEnglish]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Copy of ProductCategoryNameEnglish"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameEnglish]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ProductCategoryNameEnglish</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Insert into Dim\Overall Lookup.Inputs[Lookup Input].Columns[Copy of ProductCategoryNameSpanish]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Copy of ProductCategoryNameSpanish"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameSpanish]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ProductCategoryNameSpanish</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Insert into Dim\Overall Lookup.Inputs[Lookup Input].Columns[Copy of ProductCategoryNameFrench]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Copy of ProductCategoryNameFrench"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameFrench]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ProductCategoryNameFrench</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Insert into Dim\Overall Lookup.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\Insert into Dim\Overall Lookup.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Insert into Dim\Overall Lookup.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\Insert into Dim\Overall Lookup.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Insert into Dim\Overall Lookup.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\Insert into Dim\Overall Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert into Dim\Overall Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert into Dim\Overall Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert into Dim\Overall Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert into Dim\Overall Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Insert into Dim\Primary Key Lookup"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Primary Key Lookup"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dimProductCategory]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dimProductCategory]) [refTable]
+where [refTable].[ProductCategoryKey] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="ProductCategoryKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductCategoryNameEnglish" dataType="DT_WSTR" length="255" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductCategoryNameSpanish" dataType="DT_WSTR" length="255" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductCategoryNameFrench" dataType="DT_WSTR" length="255" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ETLDate" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryKey]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Insert into Dim\Primary Key Lookup.Connections[OleDbConnection]"
+                  connectionManagerID="{980D4FA3-1FBC-465E-9516-A97B784924AE}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Insert into Dim\Primary Key Lookup.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Insert into Dim\Primary Key Lookup.Inputs[Lookup Input].Columns[Copy of ProductCategoryKey]"
+                      cachedDataType="i4"
+                      cachedName="Copy of ProductCategoryKey"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryKey]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ProductCategoryKey</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Insert into Dim\Primary Key Lookup.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\Insert into Dim\Primary Key Lookup.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Insert into Dim\Primary Key Lookup.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\Insert into Dim\Primary Key Lookup.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Insert into Dim\Primary Key Lookup.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\Insert into Dim\Primary Key Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert into Dim\Primary Key Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert into Dim\Primary Key Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert into Dim\Primary Key Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert into Dim\Primary Key Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Insert into Dim\Source stgProduct"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Source stgProduct"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">Select	distinct
+CASE
+					WHEN ProductSubcategoryKey IN (1,2,3) THEN '1'
+					WHEN ProductSubcategoryKey IN (4,5,6,7,8,9,10,11,13,15,17,26,27,30,33,34,35,36,37) THEN '2'
+					WHEN ProductSubcategoryKey IN (12,14,16) THEN '3'
+					WHEN ProductSubcategoryKey IN (18,19,20,21,22,23,24,25,31) THEN '4'
+					WHEN ProductSubcategoryKey IN (28,29,32) THEN '5'
+				END as ProductCategoryKey,
+				CASE
+					WHEN ProductSubcategoryKey IN (1,2,3) THEN 'Bike Name'
+					WHEN ProductSubcategoryKey IN (4,5,6,7,8,9,10,11,13,15,17,26,27,30,33,34,35,36,37) THEN 'Bike Spare Part'
+					WHEN ProductSubcategoryKey IN (12,14,16) THEN 'Bike Frame'
+					WHEN ProductSubcategoryKey IN (18,19,20,21,22,23,24,25,31) THEN 'Cycling Clothing'
+					WHEN ProductSubcategoryKey IN (28,29,32) THEN 'Accessories'
+				END as ProductCategoryNameEnglish,
+				CASE
+					WHEN ProductSubcategoryKey IN (1,2,3) THEN 'Nombre de la bicicleta'
+					WHEN ProductSubcategoryKey IN (4,5,6,7,8,9,10,11,13,15,17,26,27,30,33,34,35,36,37) THEN 'Recambio de bicicleta'
+					WHEN ProductSubcategoryKey IN (12,14,16) THEN 'El marco de la bicicleta'
+					WHEN ProductSubcategoryKey IN (18,19,20,21,22,23,24,25,31) THEN 'Ropa de ciclismo'
+					WHEN ProductSubcategoryKey IN (28,29,32) THEN 'Accesorios de ciclismo'
+				END as ProductCategoryNameSpanish,
+				CASE
+					WHEN ProductSubcategoryKey IN (1,2,3) THEN 'Nom du vélo'
+					WHEN ProductSubcategoryKey IN (4,5,6,7,8,9,10,11,13,15,17,26,27,30,33,34,35,36,37) THEN 'Vélo Pièce De Rechange'
+					WHEN ProductSubcategoryKey IN (12,14,16) THEN 'Cadre de vélo'
+					WHEN ProductSubcategoryKey IN (18,19,20,21,22,23,24,25,31) THEN 'Vêtements de cyclisme'
+					WHEN ProductSubcategoryKey IN (28,29,32) THEN 'Accessoires de cyclisme'
+				END as ProductCategoryNameFrench
+From stgProduct
+Where ProductSubcategoryKey is not null</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Insert into Dim\Source stgProduct.Connections[OleDbConnection]"
+                  connectionManagerID="{980D4FA3-1FBC-465E-9516-A97B784924AE}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryKey]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].ExternalColumns[ProductCategoryKey]"
+                      length="1"
+                      lineageId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryKey]"
+                      name="ProductCategoryKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryNameEnglish]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].ExternalColumns[ProductCategoryNameEnglish]"
+                      length="16"
+                      lineageId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryNameEnglish]"
+                      name="ProductCategoryNameEnglish"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryNameSpanish]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].ExternalColumns[ProductCategoryNameSpanish]"
+                      length="24"
+                      lineageId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryNameSpanish]"
+                      name="ProductCategoryNameSpanish"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryNameFrench]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].ExternalColumns[ProductCategoryNameFrench]"
+                      length="23"
+                      lineageId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].Columns[ProductCategoryNameFrench]"
+                      name="ProductCategoryNameFrench"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].ExternalColumns[ProductCategoryKey]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="ProductCategoryKey" />
+                    <externalMetadataColumn
+                      refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].ExternalColumns[ProductCategoryNameEnglish]"
+                      codePage="1252"
+                      dataType="str"
+                      length="16"
+                      name="ProductCategoryNameEnglish" />
+                    <externalMetadataColumn
+                      refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].ExternalColumns[ProductCategoryNameSpanish]"
+                      codePage="1252"
+                      dataType="str"
+                      length="24"
+                      name="ProductCategoryNameSpanish" />
+                    <externalMetadataColumn
+                      refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output].ExternalColumns[ProductCategoryNameFrench]"
+                      codePage="1252"
+                      dataType="str"
+                      length="23"
+                      name="ProductCategoryNameFrench" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Error Output].Columns[ProductCategoryKey]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      lineageId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Error Output].Columns[ProductCategoryKey]"
+                      name="ProductCategoryKey" />
+                    <outputColumn
+                      refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Error Output].Columns[ProductCategoryNameEnglish]"
+                      codePage="1252"
+                      dataType="str"
+                      length="16"
+                      lineageId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Error Output].Columns[ProductCategoryNameEnglish]"
+                      name="ProductCategoryNameEnglish" />
+                    <outputColumn
+                      refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Error Output].Columns[ProductCategoryNameSpanish]"
+                      codePage="1252"
+                      dataType="str"
+                      length="24"
+                      lineageId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Error Output].Columns[ProductCategoryNameSpanish]"
+                      name="ProductCategoryNameSpanish" />
+                    <outputColumn
+                      refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Error Output].Columns[ProductCategoryNameFrench]"
+                      codePage="1252"
+                      dataType="str"
+                      length="23"
+                      lineageId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Error Output].Columns[ProductCategoryNameFrench]"
+                      name="ProductCategoryNameFrench" />
+                    <outputColumn
+                      refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Insert into Dim\Update Destination"
+              componentClassID="Microsoft.OLEDBCommand"
+              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
+              name="Update Destination"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">Update dimProductCategory
+Set
+ProductCategoryNameEnglish=?,
+ProductCategoryNameSpanish=?,
+ProductCategoryNameFrench=?
+Where 
+ProductCategoryKey=?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Insert into Dim\Update Destination.Connections[OleDbConnection]"
+                  connectionManagerID="{980D4FA3-1FBC-465E-9516-A97B784924AE}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input]"
+                  errorOrTruncationOperation="Command Execution"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Command Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input].Columns[Copy of ProductCategoryNameEnglish]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Copy of ProductCategoryNameEnglish"
+                      externalMetadataColumnId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameEnglish]" />
+                    <inputColumn
+                      refId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input].Columns[Copy of ProductCategoryNameSpanish]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Copy of ProductCategoryNameSpanish"
+                      externalMetadataColumnId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameSpanish]" />
+                    <inputColumn
+                      refId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input].Columns[Copy of ProductCategoryNameFrench]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Copy of ProductCategoryNameFrench"
+                      externalMetadataColumnId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryNameFrench]" />
+                    <inputColumn
+                      refId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input].Columns[Copy of ProductCategoryKey]"
+                      cachedDataType="i4"
+                      cachedName="Copy of ProductCategoryKey"
+                      externalMetadataColumnId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      lineageId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductCategoryKey]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_0">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_1">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_2">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      dataType="i4"
+                      name="Param_3">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Insert into Dim\Update Destination.Outputs[OLE DB Command Output]"
+                  exclusionGroup="1"
+                  name="OLE DB Command Output"
+                  synchronousInputId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Insert into Dim\Update Destination.Outputs[OLE DB Command Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Command Error Output"
+                  synchronousInputId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert into Dim\Update Destination.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert into Dim\Update Destination.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert into Dim\Update Destination.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert into Dim\Update Destination.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Insert into Dim.Paths[Data Conversion Output]"
+              endId="Package\Insert into Dim\Primary Key Lookup.Inputs[Lookup Input]"
+              name="Data Conversion Output"
+              startId="Package\Insert into Dim\Data Conversion.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Insert into Dim.Paths[Derived Column Output]"
+              endId="Package\Insert into Dim\Data Conversion.Inputs[Data Conversion Input]"
+              name="Derived Column Output"
+              startId="Package\Insert into Dim\Add ETLDate Column.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Insert into Dim.Paths[Lookup Match Output]"
+              endId="Package\Insert into Dim\Overall Lookup.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\Insert into Dim\Primary Key Lookup.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\Insert into Dim.Paths[Lookup No Match Output]"
+              endId="Package\Insert into Dim\Insert into Destination.Inputs[OLE DB Destination Input]"
+              name="Lookup No Match Output"
+              startId="Package\Insert into Dim\Primary Key Lookup.Outputs[Lookup No Match Output]" />
+            <path
+              refId="Package\Insert into Dim.Paths[Lookup No Match Output1]"
+              endId="Package\Insert into Dim\Update Destination.Inputs[OLE DB Command Input]"
+              name="Lookup No Match Output"
+              startId="Package\Insert into Dim\Overall Lookup.Outputs[Lookup No Match Output]" />
+            <path
+              refId="Package\Insert into Dim.Paths[OLE DB Source Output]"
+              endId="Package\Insert into Dim\Add ETLDate Column.Inputs[Derived Column Input]"
+              name="OLE DB Source Output"
+              startId="Package\Insert into Dim\Source stgProduct.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{B855B6CA-0C7B-41CF-AAC3-F7BE7317E745}"
+      DTS:From="Package\Create Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Add Unknown and Not Available Values" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{5026D69D-2142-4E43-B330-3A7EA9025D99}"
+      DTS:From="Package\Add Unknown and Not Available Values"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Insert into Dim" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="264,42"
+          Id="Package\Add Unknown and Not Available Values"
+          TopLeft="59.5,151" />
+        <NodeLayout
+          Size="139,42"
+          Id="Package\Create Table"
+          TopLeft="122,43.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Insert into Dim"
+          TopLeft="116,258.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="191.5,85.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,65.5"
+              Start="0,0"
+              End="0,58">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,58" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="191.25,193">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,65.5"
+              Start="0,0"
+              End="0,58">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,58" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Insert into Dim">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="184,42"
+          Id="Package\Insert into Dim\Insert into Destination"
+          TopLeft="430.5,260.5" />
+        <NodeLayout
+          Size="164,42"
+          Id="Package\Insert into Dim\Source stgProduct"
+          TopLeft="61.5,46.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\Insert into Dim\Data Conversion"
+          TopLeft="479.5,55.5" />
+        <NodeLayout
+          Size="149,42"
+          Id="Package\Insert into Dim\Overall Lookup"
+          TopLeft="132.5,264.5" />
+        <NodeLayout
+          Size="173,42"
+          Id="Package\Insert into Dim\Primary Key Lookup"
+          TopLeft="273.5,171.5" />
+        <NodeLayout
+          Size="169,42"
+          Id="Package\Insert into Dim\Update Destination"
+          TopLeft="129.5,342.5" />
+        <NodeLayout
+          Size="179,42"
+          Id="Package\Insert into Dim\Add ETLDate Column"
+          TopLeft="261.5,49.5" />
+        <EdgeLayout
+          Id="Package\Insert into Dim.Paths[OLE DB Source Output]"
+          TopLeft="225.5,69">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="36,0"
+              Start="0,0"
+              End="28.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="28.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Insert into Dim.Paths[Lookup No Match Output1]"
+          TopLeft="210.5,306.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-55.80638671875,8.4453125,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Insert into Dim.Paths[Lookup No Match Output]"
+          TopLeft="387.5,213.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="135,47"
+              Start="0,0"
+              End="135,39.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15.0584192439863" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,15.0584192439863"
+                    Point2="0,19.0584192439863"
+                    Point3="4,19.0584192439863" />
+                  <mssgle:LineSegment
+                    End="131,19.0584192439863" />
+                  <mssgle:CubicBezierSegment
+                    Point1="131,19.0584192439863"
+                    Point2="135,19.0584192439863"
+                    Point3="135,23.0584192439863" />
+                  <mssgle:LineSegment
+                    End="135,39.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="11.69361328125,24.0584192439863,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Insert into Dim.Paths[Lookup Match Output]"
+          TopLeft="332.5,213.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-125.5,51"
+              Start="0,0"
+              End="-125.5,43.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,16.680412371134" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,16.680412371134"
+                    Point2="0,20.680412371134"
+                    Point3="-4,20.680412371134" />
+                  <mssgle:LineSegment
+                    End="-121.5,20.680412371134" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-121.5,20.680412371134"
+                    Point2="-125.5,20.680412371134"
+                    Point3="-125.5,24.680412371134" />
+                  <mssgle:LineSegment
+                    End="-125.5,43.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-110.94138671875,25.680412371134,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Insert into Dim.Paths[Derived Column Output]"
+          TopLeft="440.5,73.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="39,0"
+              Start="0,0"
+              End="31.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="31.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Insert into Dim.Paths[Data Conversion Output]"
+          TopLeft="557.5,97.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-197.5,74"
+              Start="0,0"
+              End="-197.5,66.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,33"
+                    Point2="0,37"
+                    Point3="-4,37" />
+                  <mssgle:LineSegment
+                    End="-193.5,37" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-193.5,37"
+                    Point2="-197.5,37"
+                    Point3="-197.5,41" />
+                  <mssgle:LineSegment
+                    End="-197.5,66.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Insert into Dim\Insert into Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Insert into Dim\Source stgProduct">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Insert into Dim\Overall Lookup">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[dimProductCategory]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Insert into Dim\Primary Key Lookup">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[dimProductCategory]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

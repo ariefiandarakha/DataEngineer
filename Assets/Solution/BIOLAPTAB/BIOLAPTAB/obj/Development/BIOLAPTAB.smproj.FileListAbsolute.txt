@@ -1,0 +1,7 @@
+D:\Bootcamp BI\Exam\Business Intelligence\UJIANBI\Solution\BIOLAPTAB\BIOLAPTAB\bin\Model.asdatabase
+D:\Bootcamp BI\Exam\Business Intelligence\UJIANBI\Solution\BIOLAPTAB\BIOLAPTAB\bin\Model.deploymenttargets
+D:\Bootcamp BI\Exam\Business Intelligence\UJIANBI\Solution\BIOLAPTAB\BIOLAPTAB\bin\Model.deploymentoptions
+D:\Bootcamp BI\Exam\Business Intelligence\UJIANBI\Solution\BIOLAPTAB\BIOLAPTAB\obj\Development\BIOLAPTAB.smproj.CoreCompileInputs.cache
+D:\Bootcamp BI\Exam\Business Intelligence\UJIANBI\Solution\BIOLAPTAB\BIOLAPTAB\obj\Development\Model.asdatabase
+D:\Bootcamp BI\Exam\Business Intelligence\UJIANBI\Solution\BIOLAPTAB\BIOLAPTAB\obj\Development\Model.deploymentoptions
+D:\Bootcamp BI\Exam\Business Intelligence\UJIANBI\Solution\BIOLAPTAB\BIOLAPTAB\obj\Development\Model.deploymenttargets

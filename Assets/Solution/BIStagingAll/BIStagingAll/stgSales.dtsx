@@ -1,0 +1,1217 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/21/2022 9:27:40 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="LAPTOP-6OQM3DLS"
+  DTS:CreatorName="LAPTOP-6OQM3DLS\1374"
+  DTS:DTSID="{FD0EDFA8-16A1-4901-A62D-120FE5668CD8}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.167"
+  DTS:LocaleID="14345"
+  DTS:ObjectName="stgSales"
+  DTS:PackageType="5"
+  DTS:VersionBuild="10"
+  DTS:VersionGUID="{1935106A-0EE7-49B5-B5AF-FB401F310348}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Excel Connection Manager]"
+      DTS:CreationName="EXCEL"
+      DTS:DTSID="{6CBC9FC6-52C3-4919-BC35-8A5306BF269F}"
+      DTS:ObjectName="Excel Connection Manager">
+      <DTS:PropertyExpression
+        DTS:Name="ExcelFilePath">@[User::FilePath]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="0"
+          DTS:ConnectRetryInterval="0"
+          DTS:ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\Bootcamp BI\Exam\Business Intelligence\UJIANBI\Sales\2010M12.xlsx;Extended Properties=&quot;EXCEL 12.0 XML;HDR=YES&quot;;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{22357639-DEF7-4ED7-8545-3E8DC34544A3}"
+      DTS:ObjectName="LAPTOP-6OQM3DLS.BIDWH">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=LAPTOP-6OQM3DLS;Initial Catalog=BIDWH;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{4AD7EE00-386E-49EB-ADFC-093E77C3ADF6}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Directory">
+      <DTS:VariableValue
+        DTS:DataType="8">D:\Bootcamp BI\Exam\Business Intelligence\UJIANBI\Sales</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1FC9155D-070F-425C-A8FA-0588E2EE7228}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="FilePath">
+      <DTS:VariableValue
+        DTS:DataType="8">D:\Bootcamp BI\Exam\Business Intelligence\UJIANBI\Sales\2010M12.xlsx</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{D75EABF8-AAFA-45B9-B159-C750CC1F0013}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="vColumn">
+      <DTS:VariableValue
+        DTS:DataType="8">SalesOrderNumber</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Delete Redundant"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{e07bca0e-2c58-49b4-a3f5-bbd5fab44c11}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Delete Redundant"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="SqlStatementSource">"With DelRud as
+(
+Select ROW_NUMBER() OVER(Partition By  "+@[User::vColumn]+" Order By ETLDate desc) as RowNum From " + @[System::PackageName] + "
+)
+Delete From DelRud Where RowNum !=1"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{22357639-DEF7-4ED7-8545-3E8DC34544A3}"
+          SQLTask:SqlStatementSource="With DelRud as&#xA;(&#xA;Select ROW_NUMBER() OVER(Partition By  SalesOrderNumber Order By ETLDate desc) as RowNum From stgSales&#xA;)&#xA;Delete From DelRud Where RowNum !=1" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Foreach Loop Container"
+      DTS:CreationName="STOCK:FOREACHLOOP"
+      DTS:Description="Foreach Loop Container"
+      DTS:DTSID="{8D446CC9-B381-4507-828B-EB9D2B9E83E8}"
+      DTS:ExecutableType="STOCK:FOREACHLOOP"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Foreach Loop Container">
+      <DTS:ForEachEnumerator
+        DTS:CreationName="Microsoft.ForEachFileEnumerator"
+        DTS:DTSID="{7AA0F9BB-6040-41AC-9682-EFEEDB755056}"
+        DTS:ObjectName="{7AA0F9BB-6040-41AC-9682-EFEEDB755056}">
+        <DTS:PropertyExpression
+          DTS:Name="Directory">@[User::Directory]</DTS:PropertyExpression>
+        <DTS:ObjectData>
+          <ForEachFileEnumeratorProperties>
+            <FEFEProperty
+              Folder="D:\Bootcamp BI\Exam\Business Intelligence\UJIANBI\Sales" />
+            <FEFEProperty
+              FileSpec="*.*" />
+            <FEFEProperty
+              FileNameRetrievalType="0" />
+            <FEFEProperty
+              Recurse="0" />
+          </ForEachFileEnumeratorProperties>
+        </DTS:ObjectData>
+      </DTS:ForEachEnumerator>
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Loop Container\Insert to Staging"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{21B9BB54-231F-4EE7-A3DB-F492661D131C}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Insert to Staging"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Foreach Loop Container\Insert to Staging\Derived Column"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="Derived Column"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\Foreach Loop Container\Insert to Staging\Derived Column.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Foreach Loop Container\Insert to Staging\Derived Column.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\Foreach Loop Container\Insert to Staging\Derived Column.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Derived Column.Outputs[Derived Column Output].Columns[ETLDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Derived Column.Outputs[Derived Column Output].Columns[ETLDate]"
+                          name="ETLDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[GETDATE]()</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">GETDATE()</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Foreach Loop Container\Insert to Staging\Derived Column.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\Foreach Loop Container\Insert to Staging\Derived Column.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Foreach Loop Container\Insert to Staging\Excel Source"
+                  componentClassID="Microsoft.ExcelSource"
+                  contactInfo="Excel Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Excel Source"
+                  name="Excel Source"
+                  usesDispositions="true"
+                  version="1">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">Data$</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">0</property>
+                    <property
+                      dataType="System.String"
+                      description="The mapping from parameters in the SQL command to variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Excel Connection Manager]"
+                      connectionManagerRefId="Package.ConnectionManagers[Excel Connection Manager]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output]"
+                      name="Excel Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[ProductKey]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[ProductKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[ProductKey]"
+                          name="ProductKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[OrderDateKey]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[OrderDateKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[OrderDateKey]"
+                          name="OrderDateKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[DueDateKey]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[DueDateKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[DueDateKey]"
+                          name="DueDateKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[ShipDateKey]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[ShipDateKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[ShipDateKey]"
+                          name="ShipDateKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[CustomerKey]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[CustomerKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[CustomerKey]"
+                          name="CustomerKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[PromotionKey]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[PromotionKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[PromotionKey]"
+                          name="PromotionKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[CurrencyKey]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[CurrencyKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[CurrencyKey]"
+                          name="CurrencyKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[SalesTerritoryKey]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[SalesTerritoryKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[SalesTerritoryKey]"
+                          name="SalesTerritoryKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[SalesOrderNumber]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[SalesOrderNumber]"
+                          length="255"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[SalesOrderNumber]"
+                          name="SalesOrderNumber"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[SalesOrderLineNumber]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[SalesOrderLineNumber]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[SalesOrderLineNumber]"
+                          name="SalesOrderLineNumber"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[RevisionNumber]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[RevisionNumber]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[RevisionNumber]"
+                          name="RevisionNumber"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[OrderQuantity]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[OrderQuantity]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[OrderQuantity]"
+                          name="OrderQuantity"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[UnitPrice]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[UnitPrice]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[UnitPrice]"
+                          name="UnitPrice"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[ExtendedAmount]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[ExtendedAmount]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[ExtendedAmount]"
+                          name="ExtendedAmount"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[UnitPriceDiscountPct]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[UnitPriceDiscountPct]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[UnitPriceDiscountPct]"
+                          name="UnitPriceDiscountPct"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[DiscountAmount]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[DiscountAmount]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[DiscountAmount]"
+                          name="DiscountAmount"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[Freight]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[Freight]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[Freight]"
+                          name="Freight"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[OrderDate]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[OrderDate]"
+                          length="255"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[OrderDate]"
+                          name="OrderDate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[DueDate]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[DueDate]"
+                          length="255"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[DueDate]"
+                          name="DueDate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[ShipDate]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[ShipDate]"
+                          length="255"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[ShipDate]"
+                          name="ShipDate"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[ProductKey]"
+                          dataType="r8"
+                          name="ProductKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[OrderDateKey]"
+                          dataType="r8"
+                          name="OrderDateKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[DueDateKey]"
+                          dataType="r8"
+                          name="DueDateKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[ShipDateKey]"
+                          dataType="r8"
+                          name="ShipDateKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[CustomerKey]"
+                          dataType="r8"
+                          name="CustomerKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[PromotionKey]"
+                          dataType="r8"
+                          name="PromotionKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[CurrencyKey]"
+                          dataType="r8"
+                          name="CurrencyKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[SalesTerritoryKey]"
+                          dataType="r8"
+                          name="SalesTerritoryKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[SalesOrderNumber]"
+                          dataType="wstr"
+                          length="255"
+                          name="SalesOrderNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[SalesOrderLineNumber]"
+                          dataType="r8"
+                          name="SalesOrderLineNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[RevisionNumber]"
+                          dataType="r8"
+                          name="RevisionNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[OrderQuantity]"
+                          dataType="r8"
+                          name="OrderQuantity" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[UnitPrice]"
+                          dataType="r8"
+                          name="UnitPrice" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[ExtendedAmount]"
+                          dataType="r8"
+                          name="ExtendedAmount" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[UnitPriceDiscountPct]"
+                          dataType="r8"
+                          name="UnitPriceDiscountPct" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[DiscountAmount]"
+                          dataType="r8"
+                          name="DiscountAmount" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[Freight]"
+                          dataType="r8"
+                          name="Freight" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[OrderDate]"
+                          dataType="wstr"
+                          length="255"
+                          name="OrderDate" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[DueDate]"
+                          dataType="wstr"
+                          length="255"
+                          name="DueDate" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].ExternalColumns[ShipDate]"
+                          dataType="wstr"
+                          length="255"
+                          name="ShipDate" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output]"
+                      isErrorOut="true"
+                      name="Excel Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[ProductKey]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[ProductKey]"
+                          name="ProductKey" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[OrderDateKey]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[OrderDateKey]"
+                          name="OrderDateKey" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[DueDateKey]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[DueDateKey]"
+                          name="DueDateKey" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[ShipDateKey]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[ShipDateKey]"
+                          name="ShipDateKey" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[CustomerKey]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[CustomerKey]"
+                          name="CustomerKey" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[PromotionKey]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[PromotionKey]"
+                          name="PromotionKey" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[CurrencyKey]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[CurrencyKey]"
+                          name="CurrencyKey" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[SalesTerritoryKey]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[SalesTerritoryKey]"
+                          name="SalesTerritoryKey" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[SalesOrderNumber]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[SalesOrderNumber]"
+                          name="SalesOrderNumber" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[SalesOrderLineNumber]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[SalesOrderLineNumber]"
+                          name="SalesOrderLineNumber" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[RevisionNumber]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[RevisionNumber]"
+                          name="RevisionNumber" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[OrderQuantity]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[OrderQuantity]"
+                          name="OrderQuantity" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[UnitPrice]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[UnitPrice]"
+                          name="UnitPrice" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[ExtendedAmount]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[ExtendedAmount]"
+                          name="ExtendedAmount" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[UnitPriceDiscountPct]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[UnitPriceDiscountPct]"
+                          name="UnitPriceDiscountPct" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[DiscountAmount]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[DiscountAmount]"
+                          name="DiscountAmount" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[Freight]"
+                          dataType="r8"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[Freight]"
+                          name="Freight" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[OrderDate]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[OrderDate]"
+                          name="OrderDate" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[DueDate]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[DueDate]"
+                          name="DueDate" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[ShipDate]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[ShipDate]"
+                          name="ShipDate" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="OLE DB Destination"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[stgSales]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+                      connectionManagerRefId="Package.ConnectionManagers[LAPTOP-6OQM3DLS.BIDWH]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ProductKey]"
+                          cachedDataType="r8"
+                          cachedName="ProductKey"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[ProductKey]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[OrderDateKey]"
+                          cachedDataType="r8"
+                          cachedName="OrderDateKey"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[OrderDateKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[OrderDateKey]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[DueDateKey]"
+                          cachedDataType="r8"
+                          cachedName="DueDateKey"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DueDateKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[DueDateKey]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ShipDateKey]"
+                          cachedDataType="r8"
+                          cachedName="ShipDateKey"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ShipDateKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[ShipDateKey]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CustomerKey]"
+                          cachedDataType="r8"
+                          cachedName="CustomerKey"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[CustomerKey]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[PromotionKey]"
+                          cachedDataType="r8"
+                          cachedName="PromotionKey"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PromotionKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[PromotionKey]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CurrencyKey]"
+                          cachedDataType="r8"
+                          cachedName="CurrencyKey"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CurrencyKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[CurrencyKey]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[SalesTerritoryKey]"
+                          cachedDataType="r8"
+                          cachedName="SalesTerritoryKey"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SalesTerritoryKey]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[SalesTerritoryKey]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[SalesOrderNumber]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="SalesOrderNumber"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SalesOrderNumber]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[SalesOrderNumber]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[SalesOrderLineNumber]"
+                          cachedDataType="r8"
+                          cachedName="SalesOrderLineNumber"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SalesOrderLineNumber]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[SalesOrderLineNumber]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RevisionNumber]"
+                          cachedDataType="r8"
+                          cachedName="RevisionNumber"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RevisionNumber]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[RevisionNumber]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[OrderQuantity]"
+                          cachedDataType="r8"
+                          cachedName="OrderQuantity"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[OrderQuantity]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[OrderQuantity]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[UnitPrice]"
+                          cachedDataType="r8"
+                          cachedName="UnitPrice"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[UnitPrice]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[UnitPrice]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ExtendedAmount]"
+                          cachedDataType="r8"
+                          cachedName="ExtendedAmount"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ExtendedAmount]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[ExtendedAmount]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[UnitPriceDiscountPct]"
+                          cachedDataType="r8"
+                          cachedName="UnitPriceDiscountPct"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[UnitPriceDiscountPct]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[UnitPriceDiscountPct]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[DiscountAmount]"
+                          cachedDataType="r8"
+                          cachedName="DiscountAmount"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DiscountAmount]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[DiscountAmount]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Freight]"
+                          cachedDataType="r8"
+                          cachedName="Freight"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Freight]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[Freight]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[OrderDate]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="OrderDate"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[OrderDate]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[OrderDate]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[DueDate]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="DueDate"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DueDate]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[DueDate]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ShipDate]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="ShipDate"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ShipDate]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output].Columns[ShipDate]" />
+                        <inputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ETLDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="ETLDate"
+                          externalMetadataColumnId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ETLDate]"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\Derived Column.Outputs[Derived Column Output].Columns[ETLDate]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductKey]"
+                          dataType="i4"
+                          name="ProductKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[OrderDateKey]"
+                          dataType="i4"
+                          name="OrderDateKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DueDateKey]"
+                          dataType="i4"
+                          name="DueDateKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ShipDateKey]"
+                          dataType="i4"
+                          name="ShipDateKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerKey]"
+                          dataType="i4"
+                          name="CustomerKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PromotionKey]"
+                          dataType="i4"
+                          name="PromotionKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CurrencyKey]"
+                          dataType="i4"
+                          name="CurrencyKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SalesTerritoryKey]"
+                          dataType="i4"
+                          name="SalesTerritoryKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SalesOrderNumber]"
+                          dataType="wstr"
+                          length="255"
+                          name="SalesOrderNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SalesOrderLineNumber]"
+                          dataType="i4"
+                          name="SalesOrderLineNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RevisionNumber]"
+                          dataType="i4"
+                          name="RevisionNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[OrderQuantity]"
+                          dataType="i4"
+                          name="OrderQuantity" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[UnitPrice]"
+                          dataType="cy"
+                          name="UnitPrice" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ExtendedAmount]"
+                          dataType="cy"
+                          name="ExtendedAmount" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[UnitPriceDiscountPct]"
+                          dataType="i4"
+                          name="UnitPriceDiscountPct" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DiscountAmount]"
+                          dataType="i4"
+                          name="DiscountAmount" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Freight]"
+                          dataType="cy"
+                          name="Freight" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[OrderDate]"
+                          dataType="dbTimeStamp"
+                          name="OrderDate" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DueDate]"
+                          dataType="dbTimeStamp"
+                          name="DueDate" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ShipDate]"
+                          dataType="dbTimeStamp"
+                          name="ShipDate" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ETLDate]"
+                          dataType="dbTimeStamp"
+                          name="ETLDate" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Foreach Loop Container\Insert to Staging.Paths[Derived Column Output]"
+                  endId="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  name="Derived Column Output"
+                  startId="Package\Foreach Loop Container\Insert to Staging\Derived Column.Outputs[Derived Column Output]" />
+                <path
+                  refId="Package\Foreach Loop Container\Insert to Staging.Paths[Excel Source Output]"
+                  endId="Package\Foreach Loop Container\Insert to Staging\Derived Column.Inputs[Derived Column Input]"
+                  name="Excel Source Output"
+                  startId="Package\Foreach Loop Container\Insert to Staging\Excel Source.Outputs[Excel Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:ForEachVariableMappings>
+        <DTS:ForEachVariableMapping
+          DTS:CreationName=""
+          DTS:DTSID="{09ABE681-5F74-4E44-B2DA-A5B425CD34A0}"
+          DTS:ObjectName="{09ABE681-5F74-4E44-B2DA-A5B425CD34A0}"
+          DTS:ValueIndex="0"
+          DTS:VariableName="User::FilePath" />
+      </DTS:ForEachVariableMappings>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Truncate Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:Disabled="True"
+      DTS:DTSID="{B29E5E2F-F50E-4304-9A06-63EDAD0CC01E}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Truncate Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{22357639-DEF7-4ED7-8545-3E8DC34544A3}"
+          SQLTask:SqlStatementSource="Truncate Table stgSales" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{2FA1A252-FA03-4820-9665-B0B341038F6A}"
+      DTS:From="Package\Truncate Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Foreach Loop Container" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{BD273940-9574-441E-8C8F-F6AC7375DBA9}"
+      DTS:From="Package\Foreach Loop Container"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Delete Redundant" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Delete Redundant"
+          TopLeft="295.5,224.5" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Foreach Loop Container\Insert to Staging"
+          TopLeft="26.5,13.5" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="214,107"
+          Size="214,150"
+          Id="Package\Foreach Loop Container"
+          TopLeft="271.5,33.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Truncate Table"
+          TopLeft="54.5,81.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="204.5,105.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="67,0"
+              Start="0,0"
+              End="59.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="59.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="377.75,183.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,41"
+              Start="0,0"
+              End="0,33.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Foreach Loop Container\Insert to Staging">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="139,42"
+          Id="Package\Foreach Loop Container\Insert to Staging\Excel Source"
+          TopLeft="204.5,39.5" />
+        <NodeLayout
+          Size="154,42"
+          Id="Package\Foreach Loop Container\Insert to Staging\Derived Column"
+          TopLeft="202.5,108.5" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination"
+          TopLeft="189.5,189.5" />
+        <EdgeLayout
+          Id="Package\Foreach Loop Container\Insert to Staging.Paths[Excel Source Output]"
+          TopLeft="276.75,81.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,27"
+              Start="0,0"
+              End="0,19.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Foreach Loop Container\Insert to Staging.Paths[Derived Column Output]"
+          TopLeft="277.25,150.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,39"
+              Start="0,0"
+              End="0,31.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Foreach Loop Container\Insert to Staging\Excel Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Foreach Loop Container\Insert to Staging\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
