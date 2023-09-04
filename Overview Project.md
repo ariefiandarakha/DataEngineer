@@ -160,7 +160,7 @@ CREATE TABLE [stgTerritorial] (
 ```
 
 ## 4. Staging Sales Table
-_Control flow_ untuk migrasi data untuk table territorial seperti gambar di bawah:
+_Control flow_ untuk migrasi data untuk table sales seperti gambar di bawah:
 
 ![image](https://github.com/ariefiandarakha/DataEngineer/assets/70312661/7903aba0-acd2-4fc6-a7cd-7c878b69f557)
 
